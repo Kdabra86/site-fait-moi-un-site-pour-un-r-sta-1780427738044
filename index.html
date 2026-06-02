@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smash & Co. — Burgers Artisanaux à Genève</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #E8A838;
+            --primary-dark: #C78A20;
+            --dark: #1A1A1A;
+            --dark-2: #2A2A2A;
+            --dark-3: #333333;
+            --light: #F5F0E8;
+            --light-2: #EDE6D8;
+            --white: #FFFFFF;
+            --text: #F5F0E8;
+            --text-muted: #A89F91;
+            --accent: #D4542B;
+            --green: #4A7C59;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        nav.scrolled {
+            background: rgba(26, 26, 26, 0.97);
+            backdrop-filter: blur(20px);
+            padding: 0.6rem 2rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo span {
+            color: var(--white);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--primary) !important;
+            color: var(--dark) !important;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600 !important;
+            transition: all 0.3s !important;
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--primary-dark) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(232, 168, 56, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 2.5px;
+            background: var(--white);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&q=80') center/cover no-repeat;
+            filter: brightness(0.3);
+            transform: scale(1.05);
+            animation: heroZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroZoom {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1.15); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(26,26,26,0.4) 0%, rgba(26,26,26,0.8) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(232, 168, 56, 0.15);
+            border: 1px solid rgba(232, 168, 56, 0.3);
+            color: var(--primary);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .hero-title .highlight {
+            color: var(--primary);
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-muted);
+            max-width: 550px;
+            margin: 0 auto 2.5rem;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+            opacity: 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(232, 168, 56, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.25);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s ease infinite;
+        }
+
+        .hero-scroll i {
+            font-size: 1.2rem;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== SECTION COMMON ===== */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.15;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* ===== SPECIALTIES ===== */
+        .specialties {
+            background: var(--dark);
+        }
+
+        .specialties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .burger-card {
+            background: var(--dark-2);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .burger-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .burger-card-img {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .burger-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .burger-card:hover .burger-card-img img {
+            transform: scale(1.1);
+        }
+
+        .burger-card-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .burger-card-badge.new {
+            background: var(--green);
+        }
+
+        .burger-card-body {
+            padding: 1.5rem;
+        }
+
+        .burger-card-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .burger-card-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .burger-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .burger-card-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .burger-card-btn {
+            background: rgba(232, 168, 56, 0.1);
+            border: 1px solid rgba(232, 168, 56, 0.3);
+            color: var(--primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .burger-card-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+        }
+
+        /* ===== ABOUT ===== */
+        .about {
+            background: var(--dark-2);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-images {
+            position: relative;
+            height: 500px;
+        }
+
+        .about-img-main {
+            width: 75%;
+            height: 420px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .about-img-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-img-secondary {
+            width: 55%;
+            height: 300px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border: 5px solid var(--dark-2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .about-img-secondary img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-content .section-label {
+            text-align: left;
+        }
+
+        .about-content .section-title {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== SERVICES ===== */
+        .services {
+            background: var(--dark);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--dark-2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(232, 168, 56, 0.15);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(232, 168, 56, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .service-card ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .service-card ul li {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-card ul li i {
+            color: var(--primary);
+            font-size: 0.75rem;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            background: var(--dark-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(232, 168, 56, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-card {
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            border-color: rgba(232, 168, 56, 0.2);
+        }
+
+        .testimonial-stars {
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .testimonial-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(232, 168, 56, 0.3);
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .testimonial-role {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact {
+            background: var(--dark);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info > p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-detail-icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 14px;
+            background: rgba(232, 168, 56, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .contact-detail-text strong {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-detail-text span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .contact-hours {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--dark-2);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .contact-hours h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            font-size: 0.9rem;
+        }
+
+        .hours-row span:first-child {
+            color: var(--text-muted);
+        }
+
+        .hours-row .open {
+            color: var(--green);
+            font-weight: 500;
+        }
+
+        .hours-row .closed {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .contact-form {
+            background: var(--dark-2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .contact-form h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-submit {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .form-message {
+            display: none;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .form-message.success {
+            display: block;
+            background: rgba(74, 124, 89, 0.15);
+            border: 1px solid rgba(74, 124, 89, 0.3);
+            color: #6FCF97;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--dark-2);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand .nav-logo {
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .footer-socials a {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .footer-socials a:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-col ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-bottom a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--primary);
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-images {
+                height: 400px;
+            }
+
+            .about-img-main {
+                width: 65%;
+                height: 350px;
+            }
+
+            .about-img-secondary {
+                width: 50%;
+                height: 250px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            section {
+                padding: 4rem 1.2rem;
+            }
+
+            .about-images {
+                height: 350px;
+            }
+
+            .about-img-main {
+                width: 60%;
+                height: 300px;
+            }
+
+            .about-img-secondary {
+                width: 48%;
+                height: 220px;
+            }
+
+            .about-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.4rem;
+            }
+
+            .specialties-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#accueil" class="nav-logo">Smash <span>& Co.</span></a>
+            <ul class="nav-links">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#specialites">Nos Burgers</a></li>
+                <li><a href="#apropos">À propos</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#temoignages">Avis</a></li>
+                <li><a href="#contact" class="nav-cta">Réserver</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#accueil" onclick="closeMobile()">Accueil</a>
+        <a href="#specialites" onclick="closeMobile()">Nos Burgers</a>
+        <a href="#apropos" onclick="closeMobile()">À propos</a>
+        <a href="#services" onclick="closeMobile()">Services</a>
+        <a href="#temoignages" onclick="closeMobile()">Avis</a>
+        <a href="#contact" onclick="closeMobile()">Réserver</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero" id="accueil">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">Depuis 2018 — Genève</div>
+            <h1 class="hero-title">Des burgers<br><span class="highlight">d'exception</span><br>au cœur de Genève</h1>
+            <p class="hero-subtitle">Viande de bœuf suisse, pains artisanaux et ingrédients frais — chaque burger est une expérience gustative unique.</p>
+            <div class="hero-buttons">
+                <a href="#specialites" class="btn btn-primary"><i class="fas fa-utensils"></i> Découvrir la carte</a>
+                <a href="#contact" class="btn btn-outline"><i class="fas fa-phone"></i> Réserver une table</a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Défiler</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Spécialités -->
+    <section class="specialties" id="specialites">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">La Carte</span>
+                <h2 class="section-title">Nos créations signature</h2>
+                <p class="section-desc">Chaque burger est préparé à la commande avec des ingrédients soigneusement sélectionnés auprès de producteurs locaux.</p>
+            </div>
+            <div class="specialties-grid">
+                <div class="burger-card reveal">
+                    <div class="burger-card-img">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80" alt="Le Classique Smash">
+                        <span class="burger-card-badge">Best-seller</span>
+                    </div>
+                    <div class="burger-card-body">
+                        <h3 class="burger-card-name">Le Classique Smash</h3>
+                        <p class="burger-card-desc">Double smash patty de bœuf suisse, cheddar fondu, oignons caramélisés, sauce maison et cornichons.</p>
+                        <div class="burger-card-footer">
+                            <span class="burger-card-price">CHF 22.-</span>
+                            <button class="burger-card-btn" aria-label="Commander"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="burger-card reveal">
+                    <div class="burger-card-img">
+                        <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=800&q=80" alt="Le Genevois">
+                        <span class="burger-card-badge new">Nouveau</span>
+                    </div>
+                    <div class="burger-card-body">
+                        <h3 class="burger-card-name">Le Genevois</h3>
+                        <p class="burger-card-desc">Patty de bœuf au Gruyère AOP, fondue de poireaux, champignons sauvages et sauce aux noix.</p>
+                        <div class="burger-card-footer">
+                            <span class="burger-card-price">CHF 26.-</span>
+                            <button class="burger-card-btn" aria-label="Commander"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="burger-card reveal">
+                    <div class="burger-card-img">
+                        <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=800&q=80" alt="Le Fumé">
+                    </div>
+                    <div class="burger-card-body">
+                        <h3 class="burger-card-name">Le Fumé</h3>
+                        <p class="burger-card-desc">Bacon fumé artisanal, pepper jack, oignons rouges grillés, sauce fumée au whisky et salade croquante.</p>
+                        <div class="burger-card-footer">
+                            <span class="burger-card-price">CHF 24.-</span>
+                            <button class="burger-card-btn" aria-label="Commander"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="burger-card reveal">
+                    <div class="burger-card-img">
+                        <img src="https://images.unsplash.com/photo-1525059696034-4967a8e1dca2?w=800&q=80" alt="Le Végétarien">
+                        <span class="burger-card-badge new">Végé</span>
+                    </div>
+                    <div class="burger-card-body">
+                        <h3 class="burger-card-name">Le Végétarien</h3>
+                        <p class="burger-card-desc">Patty de betterave et lentilles, avocat frais, roquette, tomates confites et aïoli au citron.</p>
+                        <div class="burger-card-footer">
+                            <span class="burger-card-price">CHF 21.-</span>
+                            <button class="burger-card-btn" aria-label="Commander"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- À propos -->
+    <section class="about" id="apropos">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-images reveal">
+                    <div class="about-img-main">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80" alt="Notre cuisine">
+                    </div>
+                    <div class="about-img-secondary">
+                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&q=80" alt="Nos burgers">
+                    </div>
+                </div>
+                <div class="about-content reveal">
+                    <span class="section-label">Notre Histoire</span>
+                    <h2 class="section-title">Nés d'une passion pour le burger bien fait</h2>
+                    <p class="about-text">Smash & Co. a vu le jour en 2018 dans le quartier des Pâquis, fondé par deux amis genevois partageant une conviction simple : le burger mérite d'être un plat d'exception. Pas de fast-food, pas de compromis sur la qualité.</p>
+                    <p class="about-text">Notre bœuf provient exclusivement de fermes du canton de Fribourg, où les animaux sont élevés en plein air avec une alimentation naturelle. Nos pains sont livrés chaque matin par une boulangerie artisanale du vieux Carouge, et nos sauces sont préparées quotidiennement sur place.</p>
+                    <p class="about-text">Chaque détail compte : de la température de cuisson du grill à l'épaisseur exacte du smash patty, nous avons perfectionné notre processus pendant des mois avant d'ouvrir nos portes. Aujourd'hui, cette exigence se ressent dans chaque bouchée.</p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">7</span>
+                            <span class="stat-label">Années</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">150K+</span>
+                            <span class="stat-label">Burgers servis</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">4.8</span>
+                            <span class="stat-label">Note Google</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Nos Services</span>
+                <h2 class="section-title">Plus qu'un restaurant, une expérience</h2>
+                <p class="section-desc">Nous avons pensé chaque aspect de votre expérience pour qu'elle soit mémorable, que vous veniez sur place ou à domicile.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-store"></i></div>
+                    <h3>Sur place</h3>
+                    <p>Profitez d'une ambiance chaleureuse dans notre restaurant rénové. Décoration industrielle chic, musique soignée et service attentif pour un moment unique.</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 45 places assises</li>
+                        <li><i class="fas fa-check"></i> Terrasse extérieure 20 places</li>
+                        <li><i class="fas fa-check"></i> Bar avec bières artisanales</li>
+                        <li><i class="fas fa-check"></i> WiFi gratuit</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-motorcycle"></i></div>
+                    <h3>Livraison à domicile</h3>
+                    <p>Recevez nos burgers chauds et savoureux directement chez vous. Emballage isotherme spécialement conçu pour préserver la qualité.</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Livraison dans tout Genève</li>
+                        <li><i class="fas fa-check"></i> Délai moyen : 35 minutes</li>
+                        <li><i class="fas fa-check"></i> Commande minimum CHF 30.-</li>
+                        <li><i class="fas fa-check"></i> Suivi en temps réel</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-bag-shopping"></i></div>
+                    <h3>À emporter</h3>
+                    <p>Passez commande par téléphone ou en ligne et récupérez votre repas rapidement. Idéal pour les pauses déjeuner efficaces.</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Prêt en 15 minutes</li>
+                        <li><i class="fas fa-check"></i> Emballage éco-responsable</li>
+                        <li><i class="fas fa-check"></i> Menu formule midi à CHF 18.-</li>
+                        <li><i class="fas fa-check"></i> Parking à proximité</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="testimonials" id="temoignages">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Avis Clients</span>
+                <h2 class="section-title">Ce que disent nos gourmands</h2>
+                <p class="section-desc">Plus de 2 000 avis vérifiés font de Smash & Co. l'une des adresses burger les mieux notées de Genève.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Le meilleur burger que j'ai mangé à Genève, sans aucune hésitation. La viande est incroyablement savoureuse et le pain est parfait. On sent que tout est fait maison. Je reviens toutes les semaines !"</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Marc D." class="testimonial-avatar">
+                        <div>
+                            <div class="testimonial-name">Marc D.</div>
+                            <div class="testimonial-role">Client régulier depuis 2020</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Nous avons organisé l'anniversaire de mon fils ici et tout était parfait. L'équipe a été ultra réactive, les burgers sont arrivés chauds pour tout le monde, et les enfants étaient ravis. Merci !"</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Sophie L." class="testimonial-avatar">
+                        <div>
+                            <div class="testimonial-name">Sophie L.</div>
+                            <div class="testimonial-role">Événement privé</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-text">"En tant que végétarienne, je suis souvent déçue par les options burger. Ici, c'est différent : leur patty betterave-lentilles est bluffant de goût et de texture. Même mon copain carnivore l'a adoré !"</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Clara M." class="testimonial-avatar">
+                        <div>
+                            <div class="testimonial-name">Clara M.</div>
+                            <div class="testimonial-role">Foodie genevoise</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Contact</span>
+                <h2 class="section-title">Venez nous rendre visite</h2>
+                <p class="section-desc">Réservez votre table, commandez ou posez-nous vos questions — nous serons ravis de vous répondre.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info reveal">
+                    <h3>Nous trouver</h3>
+                    <p>Smash & Co. est situé dans le quartier vivant des Pâquis, à deux minutes à pied du lac Léman et de la jetée des Nations-Unies.</p>
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon"><i class="fas fa-location-dot"></i></div>
+                        <div class="contact-detail-text">
+                            <strong>Adresse</strong>
+                            <span>Rue de Lausanne 47, 1201 Genève</span>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon"><i class="fas fa-phone"></i></div>
+                        <div class="contact-detail-text">
+                            <strong>Téléphone</strong>
+                            <span>+41 22 740 12 34</span>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-detail-text">
+                            <strong>Email</strong>
+                            <span>hello@smashandco.ch</span>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon"><i class="fas fa-train"></i></div>
+                        <div class="contact-detail-text">
+                            <strong>Accès</strong>
+                            <span>Tram 15 — Arrêt Sécheron (2 min)</span>
+                        </div>
+                    </div>
+                    <div class="contact-hours">
+                        <h4><i class="fas fa-clock"></i> Horaires d'ouverture</h4>
+                        <div class="hours-row">
+                            <span>Lundi</span>
+                            <span class="closed">Fermé</span>
+                        </div>
+                        <div class="hours-row">
+                            <span>Mardi - Jeudi</span>
+                            <span class="open">11h30 - 22h00</span>
+                        </div>
+                        <div class="hours-row">
+                            <span>Vendredi - Samedi</span>
+                            <span class="open">11h30 - 23h00</span>
+                        </div>
+                        <div class="hours-row">
+                            <span>Dimanche</span>
+                            <span class="open">12h00 - 21h00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form reveal">
+                    <h3>Réserver une table</h3>
+                    <form id="reservationForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="prenom">Prénom</label>
+                                <input type="text" id="prenom" placeholder="Votre prénom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nom">Nom</label>
+                                <input type="text" id="nom" placeholder="Votre nom" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <
